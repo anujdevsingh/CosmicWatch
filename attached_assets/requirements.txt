@@ -1,0 +1,13 @@
+
+ephem>=4.1.6
+hmmlearn>=0.3.3
+numpy>=2.2.2
+openai>=1.61.1
+pandas>=2.2.3
+plotly>=6.0.0
+requests>=2.32.3
+scipy>=1.15.1
+sgp4>=2.23
+streamlit>=1.42.0
+torch>=2.6.0
+--extra-index-url https://download.pytorch.org/whl/cpu

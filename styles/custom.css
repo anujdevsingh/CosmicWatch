@@ -1,0 +1,83 @@
+/* Main title styling */
+.main-title {
+    color: #00BFFF;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 2.5rem;
+    text-shadow: 0 0 10px rgba(0,191,255,0.3);
+}
+
+/* Section headers */
+.section-header {
+    color: #00BFFF;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #00BFFF;
+}
+
+/* Sidebar styling */
+.sidebar-header {
+    color: #00BFFF;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.sidebar-subheader {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    margin: 1rem 0;
+}
+
+/* Alert box styling */
+.alert-box {
+    background: rgba(30, 30, 40, 0.7);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-left: 4px solid;
+}
+
+.alert-box.high {
+    border-color: #ff4444;
+}
+
+.alert-box.medium {
+    border-color: #ffbb33;
+}
+
+.alert-box.low {
+    border-color: #00C851;
+}
+
+/* Metrics styling */
+.stMetric {
+    background: rgba(30, 30, 40, 0.7);
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+/* Globe container */
+.plot-container {
+    background: rgba(20, 20, 30, 0.7);
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1A1C23;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00BFFF;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0097cc;
+}
