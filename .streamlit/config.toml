@@ -1,7 +1,10 @@
 [server]
 headless = true
-address = "0.0.0.0"
+address = "127.0.0.1"
 port = 5000
+fileWatcherType = "none"
+runOnSave = false
+allowRunOnSave = false
 
 [theme]
 primaryColor = "#00BFFF"
@@ -9,3 +12,13 @@ backgroundColor = "#0E1117"
 secondaryBackgroundColor = "#1A1C23"
 textColor = "#FFFFFF"
 font = "sans-serif"
+
+[runner]
+fastReruns = false
+installTracer = false
+
+[logger]
+level = "error"
+
+[global]
+developmentMode = false

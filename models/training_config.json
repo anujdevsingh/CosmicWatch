@@ -1,0 +1,8 @@
+{
+  "target_accuracy": 0.97,
+  "max_epochs_per_stage": 30,
+  "device": "auto",
+  "tle_file": "./space_debris_real.txt",
+  "training_date": "2025-05-30T14:58:27.751362",
+  "model_version": "SuperNova v1.0"
+}

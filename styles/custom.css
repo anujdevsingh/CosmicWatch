@@ -1,41 +1,43 @@
-/* Main title styling */
+/* Main title styling - Made smaller and more compact */
 .main-title {
     color: #00BFFF;
     text-align: center;
-    padding: 1rem 0;
-    font-size: 2.5rem;
-    text-shadow: 0 0 10px rgba(0,191,255,0.3);
+    padding: 0.5rem 0;
+    font-size: 1.8rem;
+    text-shadow: 0 0 8px rgba(0,191,255,0.3);
+    margin-bottom: 0.5rem;
 }
 
-/* Section headers */
+/* Section headers - Reduced size */
 .section-header {
     color: #00BFFF;
-    font-size: 1.5rem;
-    margin: 1rem 0;
-    padding-bottom: 0.5rem;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    padding-bottom: 0.3rem;
     border-bottom: 2px solid #00BFFF;
 }
 
-/* Sidebar styling */
+/* Sidebar styling - Smaller text */
 .sidebar-header {
     color: #00BFFF;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .sidebar-subheader {
     color: #FFFFFF;
-    font-size: 1.1rem;
-    margin: 1rem 0;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
 }
 
-/* Alert box styling */
+/* Alert box styling - More compact */
 .alert-box {
     background: rgba(30, 30, 40, 0.7);
-    border-radius: 10px;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-left: 4px solid;
+    border-radius: 8px;
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border-left: 3px solid;
+    font-size: 0.85rem;
 }
 
 .alert-box.high {
@@ -50,23 +52,23 @@
     border-color: #00C851;
 }
 
-/* Metrics styling */
+/* Metrics styling - Smaller padding */
 .stMetric {
     background: rgba(30, 30, 40, 0.7);
-    padding: 1rem;
-    border-radius: 10px;
+    padding: 0.5rem;
+    border-radius: 8px;
 }
 
-/* Globe container */
+/* Globe container - More compact */
 .plot-container {
     background: rgba(20, 20, 30, 0.7);
-    border-radius: 15px;
-    padding: 1rem;
+    border-radius: 12px;
+    padding: 0.5rem;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Smaller */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -75,9 +77,63 @@
 
 ::-webkit-scrollbar-thumb {
     background: #00BFFF;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #0097cc;
+}
+
+/* Additional compact styling for better fit */
+.stMetric > div {
+    font-size: 0.8rem !important;
+}
+
+.stMetric > div > div {
+    font-size: 1.2rem !important;
+}
+
+/* Smaller badges and buttons */
+.ai-badge {
+    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+    color: white;
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin: 0.1rem;
+}
+
+/* Smaller success/error/info messages */
+.stAlert {
+    padding: 0.3rem !important;
+    font-size: 0.75rem !important;
+    margin: 0.2rem 0 !important;
+}
+
+/* Make success messages less prominent */
+.stAlert[data-baseweb="notification"][kind="success"] {
+    background-color: rgba(0, 200, 83, 0.1) !important;
+    border: 1px solid rgba(0, 200, 83, 0.3) !important;
+}
+
+/* Compact text in expanders and info boxes */
+.stExpander > div > div {
+    font-size: 0.8rem !important;
+}
+
+/* Compact tabs */
+.stTabs > div > div > div {
+    font-size: 0.9rem !important;
+    padding: 0.3rem 0.6rem !important;
+}
+
+/* Smaller selectbox and button text */
+.stSelectbox label {
+    font-size: 0.8rem !important;
+}
+
+.stButton button {
+    font-size: 0.8rem !important;
+    padding: 0.3rem 0.6rem !important;
 }

@@ -1,15 +1,36 @@
-
-ephem>=4.1.6
-hmmlearn>=0.3.3
-numpy>=2.2.2
-openai>=1.61.1
-pandas>=2.2.3
-plotly>=6.0.0
-requests>=2.32.3
+# Core scientific libraries
+numpy>=1.21.0
+pandas>=1.3.0
 scipy>=1.15.1
-sgp4>=2.23
+
+# Machine Learning - PyTorch with CUDA support for both CPU and GPU
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+scikit-learn>=1.0.0
+
+# Web framework
 streamlit>=1.42.0
-torch>=2.6.0
-psycopg2-binary>=2.9.10
+
+# Plotting and visualization
+plotly>=6.0.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Database
 sqlalchemy>=2.0.38
---extra-index-url https://download.pytorch.org/whl/cpu
+
+# Space/astronomy specific
+ephem>=4.1.6
+sgp4>=2.23
+
+# Utilities
+requests>=2.25.0
+schedule>=1.2.0
+tqdm>=4.62.0
+
+# Optional ML libraries
+hmmlearn>=0.3.3
+
+# PyTorch with CUDA support installation
+--extra-index-url https://download.pytorch.org/whl/cu121 

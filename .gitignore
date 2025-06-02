@@ -181,4 +181,63 @@ replit.nix
 
 # Config directories that might contain sensitive data
 .config/
-.streamlit/secrets.toml 
+.streamlit/secrets.toml
+
+# =============================================================================
+# SPACE DEBRIS DASHBOARD SPECIFIC EXCLUSIONS
+# =============================================================================
+
+# Large AI Model Files (keep out of GitHub - too big!)
+*.pth
+*.pt
+*.pkl
+*.pickle
+cosmic_intelligence_*.pth
+cosmic_intelligence_*.pt
+
+# Space Debris Database Files (can be regenerated)
+space_debris.db
+cosmic_intelligence.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Raw Data Files (large and can be redownloaded)
+space_debris_real.txt
+space_debris.csv*
+objects_catalog_*.csv
+*.txt.gz
+
+# Cache and Results Directories
+checkpoints/
+results/
+models/cache/
+models/checkpoints/
+models/backups/
+backup_*/
+
+# Training and Analysis Output
+learning_curves_*.png
+*_results_*.json
+training_*.log
+performance_*.json
+
+# Streamlit Cache
+.streamlit/
+
+# AI Cache Files
+ai_cache/
+cache/
+
+# Backup Files
+*_backup_*.py
+backup_*/
+*.bak
+
+# Large Generated Files
+generated-icon.png
+
+# Sensitive Configuration
+api_keys.txt
+secrets.json
+config_private.json 
