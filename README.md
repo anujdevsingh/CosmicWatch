@@ -19,9 +19,19 @@
 
 ## 🌟 **Project Overview**
 
-The **Cosmic Intelligence Model (CIM)** represents a groundbreaking fusion of advanced machine learning and space science, achieving unprecedented accuracy in space debris risk assessment. This system combines physics-informed neural networks, multi-modal transformers, and real-time uncertainty quantification to provide the most accurate space debris predictions available.
+The **Cosmic Intelligence Space Debris tracking System** is an advanced space debris monitoring system that combines real-time satellite tracking data with sophisticated machine learning models to predict collision risks and visualize space debris in Earth's orbit. This revolutionary platform integrates data from multiple sources including CelesTrak and Space-Track.org to provide accurate, up-to-date information about space objects and potential hazards.
 
-### 🎯 **Key Achievements**
+Built around the groundbreaking **Cosmic Intelligence Model (CIM)**, this system represents a fusion of advanced machine learning and space science, achieving unprecedented accuracy in space debris risk assessment. The platform combines physics-informed neural networks, multi-modal transformers, and real-time uncertainty quantification to deliver the most accurate space debris predictions available.
+
+### 🎯 **Core Capabilities**
+- **🛰️ Real-Time Monitoring** - Live tracking of 11,668+ space objects
+- **🧠 AI-Powered Risk Assessment** - Machine learning collision probability predictions
+- **🌍 Interactive Visualization** - 3D Earth globe with debris object tracking
+- **⚡ Smart Performance** - AI caching system for instant responses
+- **📊 Multi-Source Integration** - CelesTrak and Space-Track.org data fusion
+- **🔔 Risk Alerts** - Automated detection of potential collision scenarios
+
+### 🏆 **Key Achievements**
 - **🏆 99.57% Accuracy** - Surpassing all existing models
 - **🚀 94.48% F1-Score** - Perfect class balance across risk categories
 - **🌌 16.58M Parameters** - Sophisticated physics-informed architecture
