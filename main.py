@@ -20,7 +20,7 @@ from utils.database import init_db, get_db, SpaceDebris, populate_real_data, pop
 # 🌌 COSMIC INTELLIGENCE MODEL - 99.57% ACCURACY & 94.48% F1-SCORE
 from cosmic_intelligence_model import get_cosmic_intelligence_model
 
-# Revolutionary AI model - IIT Madras Contest Ready
+# Revolutionary AI model for space debris tracking
 COSMIC_INTELLIGENCE_AVAILABLE = True
 
 # Global model instance
@@ -508,7 +508,7 @@ st.markdown("""
 <center>
     <span class='ai-badge'>🏆 Cosmic Intelligence AI - 99.57% Accuracy</span>
     <br/>
-    <span class='ai-badge'>🎯 Real ML Predictions - Contest Winner</span>
+    <span class='ai-badge'>🎯 Real ML Predictions - Advanced AI System</span>
 </center>
 """, unsafe_allow_html=True)
 
@@ -826,7 +826,7 @@ with tab1:
             # Model performance chart
             col1, col2 = st.columns(2)
             with col1:
-                st.info("🏆 **Contest Ready** - Exceeds all competition requirements")
+                st.info("🏆 **Production Ready** - Exceeds industry standards")
             with col2:
                 st.info("✅ **Production Grade** - Deployed for 25,000+ space objects")
 
@@ -997,7 +997,7 @@ with tab2:
             
         with summary_col3:
             st.markdown("""
-            **🏆 Contest Readiness**
+            **🏆 Production Readiness**
             - World-class accuracy achieved
             - Real-time processing capable
             - Production-grade reliability
