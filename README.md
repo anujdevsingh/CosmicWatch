@@ -210,15 +210,6 @@ L_total = L_classification + λ₁*L_physics + λ₂*L_uncertainty
 
 ---
 
-## 🏆 **Contest Ready Features**
-
-### 🎯 **IIT Madras Competition Compliance**
-- ✅ **Accuracy Target**: >98% (Achieved: 99.57%)
-- ✅ **Real Data Training**: Authentic space debris datasets
-- ✅ **Physics Integration**: Full orbital mechanics compliance
-- ✅ **Real-time Performance**: <0.2ms inference with caching
-- ✅ **Scalability**: Handles 10,000+ objects efficiently
-- ✅ **Professional UI**: Clean, responsive dashboard
 
 ### 📈 **Performance Benchmarks**
 ```
