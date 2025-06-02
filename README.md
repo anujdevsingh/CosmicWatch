@@ -298,25 +298,6 @@ The dashboard automatically handles:
 - Re-analysis triggers: Age, confidence, data changes
 - Cleanup: Automatic optimization
 ```
-
----
-
-## 🚀 **Deployment**
-
-### 🌐 **Streamlit Cloud**
-```bash
-# Deploy to Streamlit Cloud
-1. Push to GitHub
-2. Connect to Streamlit Cloud
-3. Deploy from main.py
-4. Auto-updates on push
-```
-
-### ☁️ **Other Platforms**
-- **Heroku**: Fully compatible
-- **AWS**: EC2 or Lambda deployment
-- **Docker**: Container-ready architecture
-
 ---
 
 ## 🔮 **Future Enhancements**
