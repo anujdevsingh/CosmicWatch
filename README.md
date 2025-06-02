@@ -9,7 +9,6 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.39+-red.svg)](https://streamlit.io/)
 [![Accuracy](https://img.shields.io/badge/Accuracy-99.57%25-brightgreen.svg)](https://github.com/)
 [![F1-Score](https://img.shields.io/badge/F1--Score-94.48%25-brightgreen.svg)](https://github.com/)
-[![Contest](https://img.shields.io/badge/IIT%20Madras-Contest%20Ready-gold.svg)](https://github.com/)
 
 *Where Artificial Intelligence meets Astrophysics* 🚀
 
@@ -220,15 +219,6 @@ L_total = L_classification + λ₁*L_physics + λ₂*L_uncertainty
 
 ---
 
-## 🏆 **Contest Ready Features**
-
-### 🎯 **IIT Madras Competition Compliance**
-- ✅ **Accuracy Target**: >98% (Achieved: 99.57%)
-- ✅ **Real Data Training**: Authentic space debris datasets
-- ✅ **Physics Integration**: Full orbital mechanics compliance
-- ✅ **Real-time Performance**: <0.2ms inference with caching
-- ✅ **Scalability**: Handles 10,000+ objects efficiently
-- ✅ **Professional UI**: Clean, responsive dashboard
 
 ### 📈 **Performance Benchmarks**
 ```
@@ -317,25 +307,6 @@ The dashboard automatically handles:
 - Re-analysis triggers: Age, confidence, data changes
 - Cleanup: Automatic optimization
 ```
-
----
-
-## 🚀 **Deployment**
-
-### 🌐 **Streamlit Cloud**
-```bash
-# Deploy to Streamlit Cloud
-1. Push to GitHub
-2. Connect to Streamlit Cloud
-3. Deploy from main.py
-4. Auto-updates on push
-```
-
-### ☁️ **Other Platforms**
-- **Heroku**: Fully compatible
-- **AWS**: EC2 or Lambda deployment
-- **Docker**: Container-ready architecture
-
 ---
 
 ## 🔮 **Future Enhancements**
@@ -383,7 +354,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 **Acknowledgments**
 
 ### 🏛️ **Institutions**
-- **IIT Madras** - Contest inspiration and framework
+- **IIT Madras** - inspiration and framework
 - **CelesTrak** - Real-time space debris data
 - **NASA** - Orbital mechanics validation
 - **ESA** - Space debris research collaboration
