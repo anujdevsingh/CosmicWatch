@@ -9,7 +9,6 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.39+-red.svg)](https://streamlit.io/)
 [![Accuracy](https://img.shields.io/badge/Accuracy-99.57%25-brightgreen.svg)](https://github.com/)
 [![F1-Score](https://img.shields.io/badge/F1--Score-94.48%25-brightgreen.svg)](https://github.com/)
-[![Contest](https://img.shields.io/badge/IIT%20Madras-Contest%20Ready-gold.svg)](https://github.com/)
 
 *Where Artificial Intelligence meets Astrophysics* 🚀
 
@@ -345,7 +344,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 **Acknowledgments**
 
 ### 🏛️ **Institutions**
-- **IIT Madras** - Contest inspiration and framework
+- **IIT Madras** - inspiration and framework
 - **CelesTrak** - Real-time space debris data
 - **NASA** - Orbital mechanics validation
 - **ESA** - Space debris research collaboration
