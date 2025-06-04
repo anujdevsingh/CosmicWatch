@@ -388,6 +388,10 @@ streamlit run main.py
 
 </div>
 
+## 👨‍💻 Author
+
+**Anuj Dev Singh**
+- Project Creator & Lead Developer
 ---
 
 **© 2025 Cosmic Intelligence Project | Reaching for the stars, one algorithm at a time 🌌**
