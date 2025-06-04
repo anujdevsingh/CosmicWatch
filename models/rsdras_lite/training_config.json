@@ -1,8 +1,0 @@
-{
-  "schedule": "daily",
-  "auto_retrain_threshold": 0.05,
-  "max_training_time": 3600,
-  "validation_split": 0.2,
-  "early_stopping_patience": 10,
-  "learning_rate_decay": 0.9
-}
