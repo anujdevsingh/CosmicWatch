@@ -1,16 +1,13 @@
 # Core scientific libraries
 numpy>=1.21.0
 pandas>=1.3.0
-scipy>=1.15.1
+scipy>=1.11.0
 
 # Machine Learning - PyTorch with CUDA support for both CPU and GPU
 torch>=2.0.0
 torchvision>=0.15.0
 torchaudio>=2.0.0
 scikit-learn>=1.0.0
-
-# Web framework
-streamlit>=1.42.0
 
 # Plotting and visualization
 plotly>=6.0.0
@@ -26,11 +23,9 @@ sgp4>=2.23
 
 # Utilities
 requests>=2.25.0
+python-dotenv>=1.0.0
 schedule>=1.2.0
 tqdm>=4.62.0
 
 # Optional ML libraries
 hmmlearn>=0.3.3
-
-# PyTorch with CUDA support installation
---extra-index-url https://download.pytorch.org/whl/cu121 

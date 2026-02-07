@@ -133,6 +133,9 @@ dmypy.json
 *.db
 *.sqlite
 *.sqlite3
+data/
+datasets/
+models/
 
 # Temporary files
 temp_*
@@ -154,6 +157,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.trae/
 
 # Logs
 *.log
@@ -194,6 +198,14 @@ replit.nix
 *.pickle
 cosmic_intelligence_*.pth
 cosmic_intelligence_*.pt
+
+# Generated evaluation artifacts
+*_metrics.json
+cosmic_intelligence_cdm_public_*
+
+# Frontend build output (extra safety)
+frontend/.next/
+frontend/node_modules/
 
 # Space Debris Database Files (can be regenerated)
 space_debris.db

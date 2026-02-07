@@ -1,397 +1,288 @@
-# 🌌 Cosmic Intelligence Space Debris Dashboard
+# CosmicWatch — Space Debris Dashboard + CDM Research Pipeline
 
-<div align="center">
+CosmicWatch is an educational dashboard for exploring the public space-object population and a set of scripts for building a reproducible Space-Track CDM (`cdm_public`) research dataset.
 
-**🏆 Revolutionary AI-Powered Space Debris Risk Assessment System**
+- Live catalog source: **CelesTrak** (public TLE-derived products)
+- Backend: **FastAPI** (Python)
+- Frontend: **Next.js (App Router)** (TypeScript)
+- Models:
+  - **CIM**: a coarse “risk bucket” model for dashboard visualization (not operational Pc)
+  - **CDM baseline model**: trained on Space-Track `cdm_public` labels (reproducible metrics)
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.5.1-orange.svg)](https://pytorch.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.39+-red.svg)](https://streamlit.io/)
-[![Accuracy](https://img.shields.io/badge/Accuracy-99.57%25-brightgreen.svg)](https://github.com/)
-[![F1-Score](https://img.shields.io/badge/F1--Score-94.48%25-brightgreen.svg)](https://github.com/)
+Read the responsible-use notes in [MODEL_CARD.md](MODEL_CARD.md).
 
-*Where Artificial Intelligence meets Astrophysics* 🚀
+## What’s In The App
 
-</div>
+Right sidebar panels:
+- **System Status**: DB status, data freshness, AI cache status
+- **CDM Model**: baseline CDM model metrics + a form to score a CDM-like record
+- **Cosmic Intelligence Model (CIM)**: shows checkpoint metadata (accuracy/F1/params)
+- **Pc Calculator (CDM)**: paste CDM text and compute probability of collision (Pc) using the conjunction engine
+- **Collision Alerts**: “closest pairs” alerts from the current catalog snapshot
 
----
+## Quick Start (Windows / PowerShell)
 
-## 🌟 **Project Overview**
+### 1) Backend
 
-The **Cosmic Intelligence Space Debris tracking System** is an advanced space debris monitoring system that combines real-time satellite tracking data with sophisticated machine learning models to predict collision risks and visualize space debris in Earth's orbit. This revolutionary platform integrates data from multiple sources including CelesTrak and Space-Track.org to provide accurate, up-to-date information about space objects and potential hazards.
-
-Built around the groundbreaking **Cosmic Intelligence Model (CIM)**, this system represents a fusion of advanced machine learning and space science, achieving unprecedented accuracy in space debris risk assessment. The platform combines physics-informed neural networks, multi-modal transformers, and real-time uncertainty quantification to deliver the most accurate space debris predictions available.
-
-### 🎯 **Core Capabilities**
-- **🛰️ Real-Time Monitoring** - Live tracking of 11,668+ space objects
-- **🧠 AI-Powered Risk Assessment** - Machine learning collision probability predictions
-- **🌍 Interactive Visualization** - 3D Earth globe with debris object tracking
-- **⚡ Smart Performance** - AI caching system for instant responses
-- **📊 Multi-Source Integration** - CelesTrak and Space-Track.org data fusion
-- **🔔 Risk Alerts** - Automated detection of potential collision scenarios
-
-### 🏆 **Key Achievements**
-- **🏆 99.57% Accuracy** - Surpassing all existing models
-- **🚀 94.48% F1-Score** - Perfect class balance across risk categories
-- **🌌 16.58M Parameters** - Sophisticated physics-informed architecture
-- **⚡ <0.2ms Inference** - Real-time predictions with AI caching
-- **🛰️ 11,668+ Objects** - Trained on real space debris data from CelesTrak
-
----
-
-## 🧠 **Revolutionary AI Architecture**
-
-### 🌌 **Cosmic Intelligence Model (CIM)**
-
-Our flagship model combines cutting-edge AI techniques:
-
-```
-🔬 Physics-Informed Neural Networks (PINNs)
-├── Orbital mechanics integration
-├── Conservation law enforcement
-├── J2 perturbation modeling
-└── Atmospheric drag simulation
-
-🤖 Multi-Modal Transformer Architecture
-├── 12 transformer layers
-├── 16 attention heads
-├── Multi-scale temporal attention
-└── Cross-modal feature fusion
-
-🎯 Advanced Risk Assessment
-├── 4-class risk classification (LOW/MEDIUM/HIGH/CRITICAL)
-├── Uncertainty quantification (epistemic + aleatoric)
-├── Real-time trajectory prediction
-└── Enhanced collision probability assessment
-
-⚡ Smart Performance Optimization
-├── AI-powered caching system
-├── Progressive data loading
-├── Background update system
-└── Batch processing optimization
-```
-
-### 📊 **Model Performance**
-
-| Metric | Score | Benchmark |
-|--------|-------|-----------|
-| **Accuracy** | 99.57% | Industry: ~85% |
-| **F1-Score** | 94.48% | Industry: ~70% |
-| **Precision** | 94.2% | Industry: ~75% |
-| **Recall** | 94.8% | Industry: ~72% |
-| **Inference Speed** | <0.2ms | Industry: ~100ms |
-| **Cache Hit Rate** | 90%+ | Custom Innovation |
-
----
-
-## 🚀 **Quick Start**
-
-### 1. **Clone & Setup**
-```bash
-git clone https://github.com/your-username/CosmicWatch.git
-cd CosmicWatch
-
-# Create virtual environment
+```powershell
 python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-# or
-.venv\Scripts\activate     # Windows
-
-# Install dependencies
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+python backend\run.py
 ```
 
-### 2. **Launch Dashboard**
-```bash
-streamlit run main.py
+Backend runs on `http://127.0.0.1:8000`.
+
+### 2) Frontend
+
+```powershell
+cd frontend
+npm install
+npm run dev
 ```
 
-### 3. **Access Dashboard**
-Open your browser and navigate to: `http://localhost:8501`
+Frontend runs on `http://127.0.0.1:3000`.
 
-**The dashboard will automatically:**
-- ✅ Download fresh space debris data from CelesTrak
-- ✅ Initialize the Cosmic Intelligence Model
-- ✅ Start background update system
-- ✅ Begin AI caching for performance optimization
+## Core API Endpoints
 
----
+### Catalog + Dashboard
+- `GET /api/debris?limit=500`
+- `GET /api/stats`
+- `POST /api/refresh` (forces a CelesTrak refresh)
+- `GET /api/data-status`
+- `GET /api/collisions?limit=10&sample_size=300&threshold_km=2000`
 
-## 📁 **Project Structure**
+### Models
+- `GET /api/model-info` (CIM checkpoint metadata)
+- `GET /api/cdm/model-info` (CDM baseline model info + test/val metrics)
+- `POST /api/cdm/predict` (score a CDM-like record)
 
-```
-CosmicWatch/
-├── 🌌 main.py                        # Streamlit dashboard (1,017 lines)
-├── 🧠 cosmic_intelligence_model.py    # Main AI model (16.58M parameters)
-├── 📊 improve_cosmic_model.py         # Model improvement utilities
-├── 🧪 test_cim_predictions.py        # Model testing suite
-├── 🧪 test_training.py               # Training validation
-├── 🧪 train_cosmic_model.py          # Model training pipeline
-├── components/                       # UI components
-│   ├── 🌍 globe.py                   # 3D Earth visualization
-│   ├── 📱 sidebar.py                 # Dashboard controls
-│   └── ⚠️ alerts.py                  # Risk alerts system
-├── utils/                           # Core utilities
-│   ├── 🗄️ database.py               # Database management & CelesTrak integration
-│   ├── 🧠 ai_cache_manager.py       # AI prediction caching system
-│   └── 🔄 background_updater.py     # Automated data refresh
-├── styles/                          # Styling
-│   └── 🎨 custom.css                # Clean, compact dashboard theming
-├── 📋 requirements.txt              # Python dependencies
-├── ⚙️ pyproject.toml                # Project configuration
-└── 📜 README.md                     # This file
-```
+### Conjunction Engine
+- `POST /api/conjunction/from-cdm` (paste CDM text → Pc + geometry)
+- `POST /api/conjunction/pair` (compute Pc from two states/covariances)
 
----
+## CDM Research Pipeline (Space-Track `cdm_public`)
 
-## 🔬 **Technical Features**
+All CDM scripts are under [scripts/](scripts/). The full walkthrough is in [CDM_PIPELINE.md](CDM_PIPELINE.md).
 
-### 🌟 **Advanced Capabilities**
+### 1) Configure Space-Track credentials (local only)
 
-**🤖 AI-Powered Predictions:**
-- Physics-informed neural networks with orbital mechanics
-- Multi-class risk assessment (CRITICAL/HIGH/MEDIUM/LOW)
-- Real-time uncertainty quantification
-- Sophisticated collision detection algorithms
+Copy `.env.example` → `.env` and set:
+- `SPACETRACK_USERNAME`
+- `SPACETRACK_PASSWORD`
 
-**⚡ Performance Optimizations:**
-- Smart AI caching system (90%+ hit rates)
-- Progressive data loading (Smart Sample vs Complete Dataset)
-- Background data refresh system
-- Batch processing for large datasets
+Never commit `.env`.
 
-**🌍 Real-time Visualization:**
-- Interactive 3D Earth globe with debris objects
-- Risk-based color coding and sizing
-- Dynamic collision alerts
-- Live performance metrics dashboard
+### 2) Download CDM public data
 
-**📊 Data Management:**
-- Automatic CelesTrak data synchronization
-- SQLite database with 11,668+ objects
-- Smart data freshness monitoring
-- Efficient memory management
-
-### 🧮 **Mathematical Foundation**
-
-**Orbital Energy Conservation:**
-```
-E = -μ/(2a) = (v²/2) - μ/r
+```powershell
+python scripts\spacetrack_download_cdm_public.py --out-dir data\cdm_public --created-since-days 365 --chunk-days 7 --write-latest
 ```
 
-**Angular Momentum:**
-```
-h = r × v = √(μa(1-e²))
-```
+### 3) Build dataset CSV (optionally enriched)
 
-**J2 Perturbation:**
-```
-dΩ/dt = -1.5 * n * J2 * (Re/a)² * cos(i)
+Basic dataset:
+```powershell
+python scripts\build_cdm_public_dataset.py --cdm-dir data\cdm_public --dedupe --out-csv datasets\cdm_public_dataset.csv
 ```
 
-### 🎯 **Loss Function Innovation**
-
-**Focal Loss for Class Imbalance:**
-```python
-FL(pt) = -α(1-pt)^γ * log(pt)
+Enriched dataset (SATCAT + GP) — recommended for better model quality:
+```powershell
+python scripts\build_cdm_public_dataset.py --cdm-dir data\cdm_public --dedupe --fetch-satcat-gp --id-chunk-size 50 --out-csv datasets\cdm_public_dataset_enriched.csv
 ```
 
-**Physics-Informed Loss:**
-```python
-L_total = L_classification + λ₁*L_physics + λ₂*L_uncertainty
+### 4) Split time-based and train baseline
+
+```powershell
+python scripts\split_cdm_dataset.py --in-csv datasets\cdm_public_dataset_enriched.csv --out-dir datasets\splits_enriched_quant --time-col CREATED --label-col pc_quantile_class --dedupe --drop-na-label
+python scripts\train_cdm_public_model.py --dataset-csv datasets\cdm_public_dataset_enriched.csv --train-csv datasets\splits_enriched_quant\cdm_train.csv --val-csv datasets\splits_enriched_quant\cdm_val.csv --test-csv datasets\splits_enriched_quant\cdm_test.csv --target pc_quantile_class
 ```
 
----
-
-## 📊 **Data Sources**
-
-### 🛰️ **Real Space Data**
-- **CelesTrak Catalog**: Live feeds from space agencies
-- **Object Types**: Satellites, debris, rocket bodies
-- **Real-time Updates**: Automatic 2-hour refresh cycles
-- **Coverage**: 200-2000 km altitude range
-
-### 🌍 **Smart Data Loading**
-- **Smart Sample Mode**: 500 optimally-selected objects (fast demo)
-- **Complete Dataset Mode**: All 11,668+ objects (full analysis)
-- **Progressive Loading**: Efficient batch processing
-- **AI Cache**: Intelligent prediction caching system
-
----
-
-### 📈 **Performance Benchmarks**
-```
-🎯 Technical Achievements vs Industry Standards:
-├── Accuracy: >98% ➜ 99.57% ✅ (+1.57%)
-├── F1-Score: >80% ➜ 94.48% ✅ (+14.48%)
-├── Speed: <100ms ➜ <0.2ms ✅ (500x faster)
-├── Real Data: Required ➜ 11,668+ objects ✅
-└── Physics: Required ➜ Full PINN integration ✅
+Compare latest baseline vs CIM training metrics:
+```powershell
+python scripts\compare_cdm_metrics.py
 ```
 
----
+## Configuration
 
-## 🛡️ **Model Validation**
+### Backend server
+- `PORT` (default 8000)
+- `RELOAD` (`true` by default; set `false` for stable logs)
+- `LOG_LEVEL` (default `INFO`)
+- `BACKEND_CORS_ORIGINS` (default allows localhost:3000)
 
-### 🧪 **Testing Framework**
-- **Cross-Validation**: 5-fold stratified validation
-- **Temporal Split**: Train on historical, test on recent data
-- **Edge Cases**: Extreme orbital scenarios
-- **Physics Compliance**: Conservation law verification
+### Background updates / logging noise
+- `COSMICWATCH_BACKGROUND_UPDATES` (default true)
+- `COSMICWATCH_REFRESH_INTERVAL_HOURS` (default 2 hours)
+- `COSMICWATCH_REFRESH_PROGRESS` (default false) — logs DB refresh progress if true
+- `COSMICWATCH_CELESTRAK_PROGRESS` (default false) — logs CelesTrak fetch progress if true
 
-### 📊 **Validation Results**
-```python
-Validation Metrics:
-├── Training Accuracy: 99.24%
-├── Validation Accuracy: 99.57%
-├── Test Accuracy: 99.44%
-├── Cache Performance: 90%+ hit rate
-└── Physics Compliance: 99.9%
+### CIM startup logging
+- `COSMICWATCH_CIM_STARTUP_LOGS` (default false) — show checkpoint/accuracy load logs if true
+
+## Notes On CIM “Accuracy / F1”
+
+The CIM metrics shown in the UI come from the loaded checkpoint metadata (`cosmic_intelligence_best.pth`) and are intended as *project-internal* reporting. They are not operational collision-avoidance metrics. See [MODEL_CARD.md](MODEL_CARD.md).
+
+## Model Architecture
+
+This section documents the two main model tracks in this repo:
+- **CIM (dashboard)**: coarse risk-bucket model used for visualization and ranking.
+- **CDM baseline model (research)**: scikit-learn logistic regression trained on Space-Track `cdm_public` derived labels with reproducible metrics.
+
+### 1) CIM (Cosmic Intelligence Model) — dashboard risk buckets
+
+Implementation: [cosmic_intelligence_model.py](cosmic_intelligence_model.py)
+
+High-level flow:
+
+```text
+Incoming object (from DB / CelesTrak transform)
+  ├─ altitude, velocity, inclination, size, position (x,y,z), etc.
+  ├─ CIM wrapper predicts:
+  │    1) risk_level + probabilities (physics/heuristic fallback)
+  │    2) uncertainty fields (optionally from neural net if checkpoint loaded)
+  └─ Dashboard displays risk buckets + confidence
 ```
 
----
+Neural network architecture (16.58M params reported by the checkpoint):
 
-## 🌐 **API Usage**
+```text
+CosmicIntelligenceModel
+  Inputs (sequence_length = 10)
+    orbital_elements      : [B, T, 6]   (orbital element vector)
+    physical_properties   : [B, T, 10]  (size/mass-like proxies, etc.)
+    observations          : [B, T, 8]   (sensor/obs placeholders)
+    environment           : [B, T, 12]  (environment placeholders)
 
-### 🔌 **Prediction API**
-```python
-from cosmic_intelligence_model import get_cosmic_intelligence_model
+  Embeddings (Linear → hidden_dim/4 each; hidden_dim=256)
+    orbital_embedding        6  → 64
+    physical_embedding      10  → 64
+    observational_embedding  8  → 64
+    environmental_embedding 12  → 64
 
-# Initialize model
-model = get_cosmic_intelligence_model()
+  Fusion
+    concat(4x64) → 256
+    feature_fusion: Linear(256→256) + LayerNorm + SiLU + Dropout
 
-# Make prediction
-result = model.predict_debris_risk({
-    "id": "SATELLITE-001",
-    "altitude": 400,        # km
-    "velocity": 7.6,        # km/s
-    "inclination": 51.6,    # degrees
-    "size": 2.0             # meters
-})
+  Physics Engine (physics-informed residual)
+    learnable constants: μ_earth, J2, earth_radius
+    orbital_energy_net    : 256 → 128 → 256 (SiLU + LayerNorm)
+    angular_momentum_net  : 256 → 128 → 256 (SiLU + LayerNorm)
+    atmospheric_drag_net  : 256 → 128 → 256 (SiLU + LayerNorm)
+    perturbation_processor: MultiHeadAttention(embed=256, heads=8)
+    residual: x + 0.1 * perturbed_features
 
-print(f"Risk Level: {result['risk_level']}")
-print(f"Confidence: {result['confidence']:.3f}")
-print(f"Probabilities: {result['probabilities']}")
+  Transformer stack (12 layers)
+    each layer = CosmicAttentionModule
+      temporal_attention: MultiHeadAttention(embed=256, heads=16)
+      spatial_attention : MultiHeadAttention(embed=256, heads=8)
+      ffn              : 256 → 1024 → 256 (SiLU + Dropout)
+      residual + LayerNorm around each block
+
+  Heads (multi-task, even if dashboard mostly uses risk bucket)
+    risk_classifier        : 256 → 128 → 4 (LOW/MEDIUM/HIGH/CRITICAL)
+    trajectory_predictor   : 256 → 128 → (6 * horizon)
+    anomaly_detector       : 256 → 64  → 1 (sigmoid)
+    collision_assessor     : (256*2) → 256 → 1 (sigmoid)
+    uncertainty heads      : 256 → 64 → 1 (softplus) for epistemic/aleatoric
 ```
 
-### 📡 **Dashboard Integration**
-The dashboard automatically handles:
-- Model initialization and caching
-- Real-time data updates
-- Performance monitoring
-- Error handling and fallbacks
+Important note about what “accuracy” means here:
+- The checkpoint-reported accuracy/F1 are model metadata bundled with `cosmic_intelligence_best.pth`.
+- They are not a validated Pc (probability of collision) metric.
+- For operational-grade conjunction risk you would evaluate against CDM/covariance Pc references (see the conjunction engine + CDM pipeline).
 
----
+### 2) CDM baseline model (Space-Track `cdm_public`) — reproducible research model
 
-## 🔧 **Configuration**
+Implementation: [train_cdm_public_model.py](scripts/train_cdm_public_model.py)
 
-### ⚙️ **Data Loading Modes**
-```python
-# Smart Sample Mode (Default - Fast)
-- 500 optimally-selected objects
-- 5-10 second load time
-- Perfect for demos and testing
+Purpose:
+- Predict CDM-derived labels like `pc_quantile_class` using features from the CDM record (and optional enrichment).
+- Produce reproducible, stored metrics: confusion matrix + classification report in `models/cdm_public/*_metrics.json`.
 
-# Complete Dataset Mode (Full Analysis)
-- All 11,668+ objects
-- 30-60 second load time
-- Complete risk assessment
+Pipeline diagram:
+
+```text
+CDM rows (datasets/cdm_public_dataset*.csv)
+  ├─ Feature engineering (utils/cdm_features.py)
+  │    MIN_RNG, log_min_rng, hours_to_tca
+  │    delta_inclination, delta_mean_motion
+  │    excl_vol_sum
+  │    categorical: SAT1/SAT2 object type + RCS categories (if present)
+  ├─ Preprocessing (sklearn ColumnTransformer)
+  │    numeric:
+  │      SimpleImputer(median) → StandardScaler
+  │    categorical:
+  │      SimpleImputer(most_frequent) → OneHotEncoder(handle_unknown=ignore)
+  └─ Classifier
+       LogisticRegression(max_iter=4000, class_weight=balanced)
 ```
 
-### 🎛️ **AI Cache Settings**
-```python
-# Automatic cache management
-- Max age: 24 hours
-- Confidence threshold: 80%
-- Re-analysis triggers: Age, confidence, data changes
-- Cleanup: Automatic optimization
-```
----
+Why this baseline is useful:
+- It is fast, interpretable, and usually hard to beat without better features/labels.
+- It makes it obvious whether a bigger model is actually adding value.
 
-## 🔮 **Future Enhancements**
+## Troubleshooting
 
-### 🚀 **Planned Features**
-- [ ] **Historical Analytics**: Trend analysis and prediction
-- [ ] **Export Functionality**: PDF reports and CSV data
-- [ ] **Alert System**: Email/SMS notifications for critical events
-- [ ] **Multi-language Support**: International accessibility
-- [ ] **Mobile Optimization**: Responsive design improvements
+### Hydration mismatch warning in browser
+Some extensions inject DOM attributes before React hydrates. The main Dashboard is rendered client-only to avoid hydration mismatch warnings.
 
-### 🧬 **Research Directions**
-- [ ] **Quantum ML**: Quantum-enhanced orbit prediction
-- [ ] **Federated Learning**: Distributed space agency training
-- [ ] **Explainable AI**: Physics-interpretable decisions
-- [ ] **Edge Computing**: Satellite-based inference
+### Collision Alerts panel is empty
+Try calling:
+`/api/collisions?limit=10&sample_size=500&threshold_km=3000`
+to increase sampling and distance threshold.
 
----
+## Repository Map
 
-## 👥 **Contributing**
+Key folders/files:
+- [backend/main.py](backend/main.py): FastAPI API (catalog, collisions, model-info, CDM endpoints)
+- [frontend/src/app/Dashboard.tsx](frontend/src/app/Dashboard.tsx): main UI
+- [cosmic_intelligence_model.py](cosmic_intelligence_model.py): CIM implementation + checkpoint loader
+- [conjunction/](conjunction/): Pc engine + CDM parsing utilities
+- [scripts/](scripts/): Space-Track download, dataset build, split, train, compare
+- [CDM_PIPELINE.md](CDM_PIPELINE.md): reproducible CDM research pipeline
+- [DASHBOARD_ARCHITECTURE.md](DASHBOARD_ARCHITECTURE.md): app architecture notes
 
-We welcome contributions! Here's how to get started:
+## Tests
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+These repo tests use Python’s built-in `unittest`:
 
-### 📋 **Development Guidelines**
-- Follow PEP 8 style guide
-- Add comprehensive docstrings
-- Include unit tests for new features
-- Maintain physics accuracy
-- Document model changes
-
----
-
-## 📜 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 **Acknowledgments**
-
-### 🏛️ **Institutions**
-- **IIT Madras** - inspiration and framework
-- **CelesTrak** - Real-time space debris data
-- **NASA** - Orbital mechanics validation
-- **ESA** - Space debris research collaboration
-
-### 🔬 **Technology Stack**
-- **PyTorch** - Deep learning framework
-- **Streamlit** - Interactive dashboard platform
-- **NumPy/SciPy** - Scientific computing
-- **Plotly** - Interactive visualizations
-
-### 🤝 **Special Thanks**
-- **Open Source Community** - For making this possible
-- **Space Research Community** - For advancing orbital mechanics understanding
-
----
-
-<div align="center">
-
-## 🌟 **Star the Repository!**
-
-If you find this project useful, please consider giving it a star ⭐
-
-**Made with ❤️ and lots of ☕ for the future of space exploration**
-
----
-
-### 🚀 Ready to explore the cosmos with AI? Launch the dashboard and start your journey!
-
-```bash
-streamlit run main.py
+```powershell
+python -m unittest discover -s conjunction\\tests -p "test_*.py" -v
 ```
 
-</div>
+## Release Checklist (Before You Commit / Publish)
 
-## 👨‍💻 Author
+### Do not commit
+- `.env` (Space-Track credentials)
+- `datasets/` (generated datasets)
+- `models/` (trained models and metrics)
+- `*.pth` (PyTorch checkpoints)
+- `*.pkl` (scikit-learn pipelines)
+- `*_metrics.json` (generated evaluation artifacts)
+- Local DB files like `space_debris.db` (if present)
 
-**Anuj Dev Singh**
-- Project Creator & Lead Developer
----
+### Confirm `.gitignore` covers these artifacts
+- Verify these folders/files are ignored:
+  - `datasets/`
+  - `models/`
+  - `.env`
+  - `*.pth`, `*.pkl`, `*_metrics.json`
 
-**© 2025 Cosmic Intelligence Project | Reaching for the stars, one algorithm at a time 🌌**
+### Sanity checks before commit
+- Backend boots cleanly:
+  - `python backend/run.py`
+- Frontend builds:
+  - `cd frontend && npm run build`
+- CDM endpoints respond:
+  - `GET /api/cdm/model-info`
+  - `POST /api/cdm/predict`
+- No secrets in git diff:
+  - check that no Space-Track username/password appears anywhere
+- Optional: run unit tests:
+  - `python -m unittest discover -s conjunction\\tests -p "test_*.py" -v`
+
+## License
+
+MIT — see [LICENSE](LICENSE).

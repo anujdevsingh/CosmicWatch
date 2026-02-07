@@ -6,8 +6,8 @@ Handles non-blocking data updates and smart notifications
 
 import threading
 import time
+import logging
 from datetime import datetime, timedelta
-import streamlit as st
 from utils.database import (
     is_data_fresh, 
     populate_real_data_force_refresh, 
@@ -15,6 +15,8 @@ from utils.database import (
     get_metadata_value,
     set_metadata_value
 )
+
+logger = logging.getLogger("cosmicwatch.bg")
 
 class BackgroundUpdateManager:
     """Manages background data updates and notifications."""
@@ -34,14 +36,14 @@ class BackgroundUpdateManager:
         self.is_running = True
         self.update_thread = threading.Thread(target=self._background_update_loop, daemon=True)
         self.update_thread.start()
-        print("🔄 Background update system started")
+        logger.info("Background update system started")
         
     def stop_background_updates(self):
         """Stop the background update system."""
         self.is_running = False
         if self.update_thread:
             self.update_thread.join(timeout=1)
-        print("⏹️ Background update system stopped")
+        logger.info("Background update system stopped")
         
     def _background_update_loop(self):
         """Main background update loop."""
@@ -51,16 +53,16 @@ class BackgroundUpdateManager:
                 
                 # Check if data needs updating
                 if not is_data_fresh(max_age_hours=self.update_interval_hours):
-                    print("🔄 Background: Data is stale, attempting refresh...")
+                    logger.info("Background: data is stale, attempting refresh")
                     self._attempt_background_refresh()
                 else:
-                    print("✅ Background: Data is fresh, no update needed")
+                    logger.info("Background: data is fresh, no update needed")
                 
                 # Sleep for 30 minutes before next check
                 time.sleep(30 * 60)  # 30 minutes
                 
             except Exception as e:
-                print(f"⚠️ Background update error: {e}")
+                logger.exception("Background update error: %s", e)
                 time.sleep(60)  # Wait 1 minute on error
                 
     def _attempt_background_refresh(self):
@@ -78,12 +80,12 @@ class BackgroundUpdateManager:
                 
                 # Notify success
                 self.add_notification("✅ Fresh space debris data available! Refresh to see updates.", "success")
-                print("✅ Background update completed successfully")
+                logger.info("Background update completed successfully")
             else:
                 self.add_notification("⚠️ Background update failed, using cached data", "warning")
                 
         except Exception as e:
-            print(f"❌ Background refresh failed: {e}")
+            logger.exception("Background refresh failed: %s", e)
             self.add_notification("❌ Background update failed, check connectivity", "error")
             
     def add_notification(self, message, type="info"):

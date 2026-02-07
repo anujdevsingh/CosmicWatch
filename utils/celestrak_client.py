@@ -5,6 +5,8 @@ import math
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
+import os
+import logging
 
 @dataclass
 class TLEData:
@@ -37,8 +39,11 @@ class CelesTrakClient:
         Returns:
             List of satellite/debris objects
         """
+        logger = logging.getLogger("cosmicwatch.celestrak")
+        progress = os.getenv("COSMICWATCH_CELESTRAK_PROGRESS", "false").strip().lower() in {"1", "true", "yes", "y", "on"}
         try:
-            print("🛰️ Fetching active satellites from CelesTrak...")
+            if progress:
+                logger.info("Fetching active satellites from CelesTrak")
             
             url = f"{self.BASE_URL}?GROUP=active&FORMAT={format_type}"
             response = self.session.get(url, timeout=30)
@@ -46,25 +51,28 @@ class CelesTrakClient:
             
             if format_type.lower() == "json":
                 data = response.json()
-                print(f"✅ Retrieved {len(data)} active objects from CelesTrak")
+                logger.info("Retrieved active objects=%s", len(data))
                 return data
             else:
                 # Handle TLE format
                 tle_data = self._parse_tle_data(response.text)
-                print(f"✅ Retrieved {len(tle_data)} TLE objects from CelesTrak")
+                logger.info("Retrieved TLE objects=%s", len(tle_data))
                 return [self._tle_to_dict(tle) for tle in tle_data]
                 
         except requests.exceptions.RequestException as e:
-            print(f"❌ Error fetching CelesTrak data: {str(e)}")
+            logger.exception("Error fetching CelesTrak data: %s", e)
             raise
         except json.JSONDecodeError as e:
-            print(f"❌ Error parsing CelesTrak JSON: {str(e)}")
+            logger.exception("Error parsing CelesTrak JSON: %s", e)
             raise
     
     def fetch_debris_only(self) -> List[Dict[str, Any]]:
         """Fetch space debris specifically from active satellites data."""
+        logger = logging.getLogger("cosmicwatch.celestrak")
+        progress = os.getenv("COSMICWATCH_CELESTRAK_PROGRESS", "false").strip().lower() in {"1", "true", "yes", "y", "on"}
         try:
-            print("🗑️ Fetching space debris from CelesTrak...")
+            if progress:
+                logger.info("Fetching debris subset from CelesTrak")
             
             # Get all active satellites and filter for debris
             active_data = self.fetch_active_satellites()
@@ -76,45 +84,51 @@ class CelesTrakClient:
                 if any(keyword in name for keyword in ['DEBRIS', 'DEB', 'FRAGMENT', 'FRAG']):
                     debris_objects.append(obj)
             
-            print(f"✅ Retrieved {len(debris_objects)} debris objects from active satellites")
+            logger.info("Retrieved debris objects=%s", len(debris_objects))
             return debris_objects
             
         except Exception as e:
-            print(f"❌ Error fetching debris data: {str(e)}")
+            logger.exception("Error fetching debris data: %s", e)
             return []
     
     def fetch_starlink_satellites(self) -> List[Dict[str, Any]]:
         """Fetch Starlink constellation satellites."""
+        logger = logging.getLogger("cosmicwatch.celestrak")
+        progress = os.getenv("COSMICWATCH_CELESTRAK_PROGRESS", "false").strip().lower() in {"1", "true", "yes", "y", "on"}
         try:
-            print("🌌 Fetching Starlink satellites from CelesTrak...")
+            if progress:
+                logger.info("Fetching Starlink satellites from CelesTrak")
             
             url = f"{self.BASE_URL}?GROUP=starlink&FORMAT=json"
             response = self.session.get(url, timeout=30)
             response.raise_for_status()
             
             data = response.json()
-            print(f"✅ Retrieved {len(data)} Starlink satellites")
+            logger.info("Retrieved Starlink objects=%s", len(data))
             return data
             
         except Exception as e:
-            print(f"❌ Error fetching Starlink data: {str(e)}")
+            logger.exception("Error fetching Starlink data: %s", e)
             return []
     
     def fetch_recent_launches(self) -> List[Dict[str, Any]]:
         """Fetch recently launched objects (last 30 days)."""
+        logger = logging.getLogger("cosmicwatch.celestrak")
+        progress = os.getenv("COSMICWATCH_CELESTRAK_PROGRESS", "false").strip().lower() in {"1", "true", "yes", "y", "on"}
         try:
-            print("🚀 Fetching recent launches from CelesTrak...")
+            if progress:
+                logger.info("Fetching recent launches from CelesTrak")
             
             url = f"{self.BASE_URL}?GROUP=last-30-days&FORMAT=json"
             response = self.session.get(url, timeout=30)
             response.raise_for_status()
             
             data = response.json()
-            print(f"✅ Retrieved {len(data)} recent launches")
+            logger.info("Retrieved recent launches=%s", len(data))
             return data
             
         except Exception as e:
-            print(f"❌ Error fetching recent launches: {str(e)}")
+            logger.exception("Error fetching recent launches: %s", e)
             return []
     
     def _parse_tle_data(self, tle_text: str) -> List[TLEData]:
@@ -154,6 +168,7 @@ class CelesTrakClient:
         Returns:
             List of transformed objects ready for the dashboard
         """
+        logger = logging.getLogger("cosmicwatch.celestrak")
         transformed_objects = []
         
         for obj in satellite_data:
@@ -256,7 +271,7 @@ class CelesTrakClient:
                 transformed_objects.append(transformed_obj)
                 
             except (ValueError, KeyError, TypeError, ZeroDivisionError) as e:
-                print(f"⚠️ Error processing object {obj.get('NORAD_CAT_ID', 'UNKNOWN')}: {str(e)}")
+                logger.debug("Error processing object norad=%s error=%s", obj.get('NORAD_CAT_ID', 'UNKNOWN'), e)
                 continue
         
         print(f"✅ Successfully transformed {len(transformed_objects)} objects")
@@ -330,6 +345,7 @@ def fetch_celestrak_data(include_debris: bool = True, include_starlink: bool = T
     Returns:
         List of all satellite and debris objects
     """
+    logger = logging.getLogger("cosmicwatch.celestrak")
     client = CelesTrakClient()
     all_objects = []
     
@@ -348,7 +364,7 @@ def fetch_celestrak_data(include_debris: bool = True, include_starlink: bool = T
                              if obj.get('NORAD_CAT_ID') not in existing_ids]
                 all_objects.extend(new_debris)
             except Exception as e:
-                print(f"⚠️ Could not fetch additional debris data: {e}")
+                logger.warning("Could not fetch additional debris data: %s", e)
         
         # Optionally add Starlink data (usually included in active)
         if include_starlink:
@@ -359,27 +375,21 @@ def fetch_celestrak_data(include_debris: bool = True, include_starlink: bool = T
                                if obj.get('NORAD_CAT_ID') not in existing_ids]
                 all_objects.extend(new_starlink)
             except Exception as e:
-                print(f"⚠️ Could not fetch additional Starlink data: {e}")
+                logger.warning("Could not fetch additional Starlink data: %s", e)
         
         # Transform to dashboard format
         transformed_objects = client.transform_to_dashboard_format(all_objects)
-        
-        print(f"🌍 CELESTRAK DATA SUMMARY:")
-        print(f"   📡 Total Objects: {len(transformed_objects)}")
-        
-        # Count by type
-        type_counts = {}
+
+        type_counts: dict[str, int] = {}
         for obj in transformed_objects:
-            obj_type = obj.get('object_type', 'UNKNOWN')
+            obj_type = str(obj.get("object_type", "UNKNOWN"))
             type_counts[obj_type] = type_counts.get(obj_type, 0) + 1
-        
-        for obj_type, count in type_counts.items():
-            print(f"   🔹 {obj_type}: {count}")
+        logger.info("CelesTrak summary total=%s by_type=%s", len(transformed_objects), type_counts)
         
         return transformed_objects
         
     except Exception as e:
-        print(f"❌ Error fetching CelesTrak data: {str(e)}")
+        logger.exception("Error fetching CelesTrak data: %s", e)
         raise
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Intelligent caching of AI predictions to improve performance
 """
 
 from datetime import datetime, timedelta
-from utils.database import get_db, SpaceDebris, set_metadata_value, get_metadata_value
+from utils.database import get_db_session, SpaceDebris, set_metadata_value, get_metadata_value
 
 class AICacheManager:
     """Manages AI prediction caching and smart re-analysis."""
@@ -55,17 +55,17 @@ class AICacheManager:
     def cache_prediction(self, debris_id, prediction):
         """Cache an AI prediction for future use."""
         try:
-            db = next(get_db())
-            debris_obj = db.query(SpaceDebris).filter(SpaceDebris.id == debris_id).first()
-            
-            if debris_obj:
-                debris_obj.ai_risk_level = prediction.get('risk_level', 'UNKNOWN')
-                debris_obj.ai_confidence = prediction.get('confidence', 0.0)
-                debris_obj.ai_last_predicted = datetime.now()
-                debris_obj.ai_enhanced = 1 if prediction.get('enhanced', False) else 0
+            with get_db_session() as db:
+                debris_obj = db.query(SpaceDebris).filter(SpaceDebris.id == debris_id).first()
                 
-                db.commit()
-                return True
+                if debris_obj:
+                    debris_obj.ai_risk_level = prediction.get('risk_level', 'UNKNOWN')
+                    debris_obj.ai_confidence = prediction.get('confidence', 0.0)
+                    debris_obj.ai_last_predicted = datetime.now()
+                    debris_obj.ai_enhanced = 1 if prediction.get('enhanced', False) else 0
+                    
+                    db.commit()
+                    return True
         except Exception as e:
             print(f"⚠️ Error caching prediction for {debris_id}: {e}")
             return False
@@ -73,23 +73,22 @@ class AICacheManager:
     def get_cache_statistics(self):
         """Get statistics about AI cache usage."""
         try:
-            db = next(get_db())
-            
-            total_objects = db.query(SpaceDebris).count()
-            cached_objects = db.query(SpaceDebris).filter(
-                SpaceDebris.ai_risk_level.isnot(None)
-            ).count()
-            
-            # Recent predictions (last 24 hours)
-            recent_cutoff = datetime.now() - timedelta(hours=24)
-            recent_predictions = db.query(SpaceDebris).filter(
-                SpaceDebris.ai_last_predicted > recent_cutoff
-            ).count()
-            
-            # High confidence predictions
-            high_confidence = db.query(SpaceDebris).filter(
-                SpaceDebris.ai_confidence >= self.confidence_threshold
-            ).count()
+            with get_db_session() as db:
+                total_objects = db.query(SpaceDebris).count()
+                cached_objects = db.query(SpaceDebris).filter(
+                    SpaceDebris.ai_risk_level.isnot(None)
+                ).count()
+                
+                # Recent predictions (last 24 hours)
+                recent_cutoff = datetime.now() - timedelta(hours=24)
+                recent_predictions = db.query(SpaceDebris).filter(
+                    SpaceDebris.ai_last_predicted > recent_cutoff
+                ).count()
+                
+                # High confidence predictions
+                high_confidence = db.query(SpaceDebris).filter(
+                    SpaceDebris.ai_confidence >= self.confidence_threshold
+                ).count()
             
             return {
                 'total_objects': total_objects,
@@ -116,21 +115,20 @@ class AICacheManager:
     def optimize_cache(self):
         """Optimize the AI cache by cleaning old/invalid entries."""
         try:
-            db = next(get_db())
-            
-            # Remove very old predictions (>7 days)
-            old_cutoff = datetime.now() - timedelta(days=7)
-            old_count = db.query(SpaceDebris).filter(
-                SpaceDebris.ai_last_predicted < old_cutoff
-            ).update({
-                SpaceDebris.ai_risk_level: None,
-                SpaceDebris.ai_confidence: None,
-                SpaceDebris.ai_last_predicted: None,
-                SpaceDebris.ai_enhanced: 0
-            })
-            
-            db.commit()
-            print(f"🧹 Cleaned {old_count} old AI cache entries")
+            with get_db_session() as db:
+                # Remove very old predictions (>7 days)
+                old_cutoff = datetime.now() - timedelta(days=7)
+                old_count = db.query(SpaceDebris).filter(
+                    SpaceDebris.ai_last_predicted < old_cutoff
+                ).update({
+                    SpaceDebris.ai_risk_level: None,
+                    SpaceDebris.ai_confidence: None,
+                    SpaceDebris.ai_last_predicted: None,
+                    SpaceDebris.ai_enhanced: 0
+                })
+                
+                db.commit()
+                print(f"🧹 Cleaned {old_count} old AI cache entries")
             
             # Update metadata
             set_metadata_value('last_cache_optimization', datetime.now().isoformat())
